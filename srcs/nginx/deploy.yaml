@@ -4,8 +4,10 @@ metadata:
   name: nginx
   labels:
     app: nginx
+  annotations:
+    metallb.universe.tf/address-pool: metallb-ip-range
 spec:
-  type: NodePort
+  type: LoadBalancer
   selector:
     app: nginx
   ports:
@@ -15,7 +17,6 @@ spec:
       port: 443
     - name: ssh
       port: 22
-      nodePort: 3022
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -36,5 +37,13 @@ spec:
       - name: nginx
         image: nginx-img
         imagePullPolicy: Never
-        securityContext:
-          privileged: true
+        ports:
+          - name: http
+            containerPort: 80
+          - name: https
+            containerPort: 443
+          - name: ssh
+            containerPort: 22
+      restartPolicy: Always
+
+

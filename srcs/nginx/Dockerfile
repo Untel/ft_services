@@ -1,11 +1,18 @@
 FROM alpine
 RUN apk update &&\
-    apk add nginx
+    apk add nginx &&\
+    apk add openssl
 
-WORKDIR /etc/nginx
-COPY srcs/nginx/nginx.conf conf.d/nginx.conf
+RUN     adduser -D -g 'www' www
+RUN     chown -R www:www /var/lib/nginx
+RUN     chown -R www:www /var/www
+COPY    nginx.conf /etc/nginx/nginx.conf
+RUN     mkdir -p /var/www/html
+COPY    index.html /var/www/html/index.html
+RUN     mkdir -p /run/nginx
+RUN     openssl req -x509 -out /etc/ssl/certs/wpadda.crt -keyout /etc/ssl/private/wpadda.key \
+  -newkey rsa:2048 -nodes -sha256 \
+  -subj '/CN=wpadda'
 
-COPY srcs/nginx/nginx.sh /tmp/nginx.conf
-
-EXPOSE 80 443
-ENTRYPOINT sh /tmp/nginx.sh
+EXPOSE 22 80 443
+ENTRYPOINT nginx -g 'daemon off;'
