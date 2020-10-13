@@ -6,6 +6,7 @@ metadata:
     app: nginx
   annotations:
     metallb.universe.tf/address-pool: metallb-ip-range
+    metallb.universe.tf/allow-shared-ip: ft_services
 spec:
   type: LoadBalancer
   selector:
@@ -45,5 +46,22 @@ spec:
           - name: ssh
             containerPort: 22
       restartPolicy: Always
-
-
+# ---
+# apiVersion: batch/v1
+# kind: Job
+# metadata:
+#   name: nginx-job
+#   labels:
+#     jobgroup: nginx-job
+# spec:
+#   template:
+#     metadata:
+#       name: nginx-job
+#       labels:
+#         jobgroup: nginx-job
+#     spec:
+#       containers:
+#       - name: nginx
+#         image: nginx-img
+#         command: ["sh", "-c", "echo Processing item && sleep 5"]
+#       restartPolicy: Never

@@ -36,3 +36,14 @@ function    docker_exec_container {
     fi
     docker exec -ti $id sh
 }
+
+#			kubectl_reload(name, ...)
+function	kubectl_reload {
+    ft_service_path="$HOME/lab/ft_services/srcs"
+    eval $(minikube -p minikube docker-env)
+	for service in "$@"; do
+		kubectl delete -f $ft_service_path/$service/deploy.yaml
+        docker build -t "$service-img" "srcs/$service"
+        kubectl apply -f $ft_service_path/$service/deploy.yaml
+	done
+}
