@@ -19,18 +19,15 @@ services=(nginx mysql)
 # export NO_PROXY=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24
 
 echo "Starting minikube"
-minikube start --vm-driver=docker --extra-config=apiserver.service-node-port-range=1-35000
+minikube start --vm-driver=virtualbox --extra-config=apiserver.service-node-port-range=1-35000
 echo "Linking Minikube daemon to Docker daemon"
 eval $(minikube -p minikube docker-env)
-minikube addons enable ingress
 
 echo "Montage de MetalLB"
 kubectl apply -f srcs/metallb/namespace.yaml
 kubectl apply -f srcs/metallb/metallb.yaml
 kubectl apply -f srcs/metallb/deploy.yaml
 kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
-#minikube addons enable ingress
-#kubectl apply -f ingress.yaml
 
 for service in ${services[@]}
 do
