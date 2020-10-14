@@ -11,7 +11,7 @@ then
 fi
 
 srcs=./srcs
-services=(nginx mysql ftps phpmyadmin)
+services=(nginx mysql ftps phpmyadmin wordpress)
 
 
 # export HTTP_PROXY=http://192.168.99.124:80

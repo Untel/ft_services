@@ -11,7 +11,6 @@ RUN       chown -R www:www /var/lib/nginx
 RUN       chown -R www:www /var/www
 
 COPY      nginx.conf /etc/nginx/nginx.conf
-COPY      phpmyadmin.sh /tmp/phpmyadmin.sh
 RUN       mkdir -p /var/www/html
 
 WORKDIR   /var/www/html

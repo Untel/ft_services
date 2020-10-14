@@ -1,59 +1,59 @@
 kind: Service
 apiVersion: v1
 metadata:
-  name: phpmyadmin
+  name: wordpress
   labels:
-    app: phpmyadmin
+    app: wordpress
   annotations:
     metallb.universe.tf/address-pool: metallb-ip-range
     metallb.universe.tf/allow-shared-ip: ft_services
 spec:
   type: LoadBalancer
   selector:
-    app: phpmyadmin
+    app: wordpress
   ports:
     - name: http
-      port: 5000
+      port: 5050
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: phpmyadmin
+  name: wordpress
   labels:
-    app: phpmyadmin
+    app: wordpress
 spec:
   selector:
     matchLabels:
-      app: phpmyadmin
+      app: wordpress
   template:
     metadata:
       labels:
-        app: phpmyadmin
+        app: wordpress
     spec:
       containers:
-      - name: phpmyadmin
-        image: phpmyadmin-img
+      - name: wordpress
+        image: wordpress-img
         imagePullPolicy: Never
         ports:
           - name: http
-            containerPort: 5000
+            containerPort: 5050
       restartPolicy: Always
 # ---
 # apiVersion: batch/v1
 # kind: Job
 # metadata:
-#   name: phpmyadmin-job
+#   name: wordpress-job
 #   labels:
-#     jobgroup: phpmyadmin-job
+#     jobgroup: wordpress-job
 # spec:
 #   template:
 #     metadata:
-#       name: phpmyadmin-job
+#       name: wordpress-job
 #       labels:
-#         jobgroup: phpmyadmin-job
+#         jobgroup: wordpress-job
 #     spec:
 #       containers:
-#       - name: phpmyadmin
-#         image: phpmyadmin-img
+#       - name: wordpress
+#         image: wordpress-img
 #         command: ["sh", "-c", "echo Processing item && sleep 5"]
 #       restartPolicy: Never

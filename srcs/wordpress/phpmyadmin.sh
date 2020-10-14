@@ -1,2 +1,0 @@
-echo "COUCOU!"
-sh
