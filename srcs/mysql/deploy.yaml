@@ -13,10 +13,23 @@ spec:
     protocol: TCP
     name: mysql
 ---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+  labels:
+    app: mysql-storage
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 2Gi
+---
   apiVersion: apps/v1
   kind: Deployment
   metadata:
-    name: mysql
+    name: mysql-deployment
     labels:
       app: mysql
   spec:
@@ -35,3 +48,10 @@ spec:
           ports:
           - containerPort: 3306
             name: mysql
+          volumeMounts:
+          - name: mysql-persistent-storage
+            mountPath: /var/lib/mysql
+        volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim
