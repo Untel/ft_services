@@ -1,0 +1,59 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: phpmyadmin
+  labels:
+    app: phpmyadmin
+  annotations:
+    metallb.universe.tf/address-pool: metallb-ip-range
+    metallb.universe.tf/allow-shared-ip: ft_services
+spec:
+  type: LoadBalancer
+  selector:
+    app: phpmyadmin
+  ports:
+    - name: http
+      port: 5000
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: phpmyadmin
+  labels:
+    app: phpmyadmin
+spec:
+  selector:
+    matchLabels:
+      app: phpmyadmin
+  template:
+    metadata:
+      labels:
+        app: phpmyadmin
+    spec:
+      containers:
+      - name: phpmyadmin
+        image: phpmyadmin-img
+        imagePullPolicy: Never
+        ports:
+          - name: http
+            containerPort: 5000
+      restartPolicy: Always
+# ---
+# apiVersion: batch/v1
+# kind: Job
+# metadata:
+#   name: phpmyadmin-job
+#   labels:
+#     jobgroup: phpmyadmin-job
+# spec:
+#   template:
+#     metadata:
+#       name: phpmyadmin-job
+#       labels:
+#         jobgroup: phpmyadmin-job
+#     spec:
+#       containers:
+#       - name: phpmyadmin
+#         image: phpmyadmin-img
+#         command: ["sh", "-c", "echo Processing item && sleep 5"]
+#       restartPolicy: Never
