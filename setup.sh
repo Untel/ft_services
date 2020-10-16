@@ -11,7 +11,7 @@ then
 fi
 
 srcs=./srcs
-services=(mysql influxdb nginx ftps phpmyadmin wordpress telegraf)
+services=(mysql influxdb nginx ftps phpmyadmin wordpress grafana telegraf)
 
 
 # export HTTP_PROXY=http://192.168.99.124:80
