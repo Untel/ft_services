@@ -10,13 +10,6 @@ then
     minikube    delete
 fi
 
-srcs=./srcs
-services=(mysql influxdb nginx ftps phpmyadmin wordpress grafana telegraf)
-
-
-# export HTTP_PROXY=http://192.168.99.124:80
-# export HTTPS_PROXY=https://ft_service:443
-# export NO_PROXY=localhost,127.0.0.1,10.96.0.0/12,192.168.99.0/24,192.168.39.0/24
 
 echo "Starting minikube"
 minikube start --vm-driver=virtualbox --extra-config=apiserver.service-node-port-range=1-35000
@@ -29,6 +22,8 @@ kubectl apply -f srcs/metallb/metallb.yaml
 kubectl apply -f srcs/metallb/deploy.yaml
 kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
 
+srcs=./srcs
+services=(mysql influxdb nginx ftps phpmyadmin wordpress grafana telegraf)
 for service in ${services[@]}
 do
 	echo "Création de l'image $service"

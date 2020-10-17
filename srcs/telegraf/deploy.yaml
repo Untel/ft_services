@@ -300,6 +300,8 @@ spec:
               name: telegraf-config
               subPath: telegraf.conf
               readOnly: true
+            - name: telegraf-endpoint
+              mountPath: "/var/run/docker.sock"
           envFrom:
             - secretRef:
                 name: telegraf-secrets
@@ -307,3 +309,6 @@ spec:
         - name: telegraf-config
           configMap:
             name: telegraf-config
+        - name: telegraf-endpoint
+          hostPath:
+            path: /var/run/docker.sock
