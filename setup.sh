@@ -1,6 +1,9 @@
-#!/bin/sh
+#!/bin/zsh
 
 source ./shortcuts.sh
+
+# sudo usermod -aG docker $USER
+# newgrp docker
 
 if [[ $1 == "re" ]]
 then
@@ -12,9 +15,10 @@ fi
 
 
 echo "Starting minikube"
-minikube start --vm-driver=virtualbox --extra-config=apiserver.service-node-port-range=1-35000
+minikube start --vm-driver=docker --extra-config=apiserver.service-node-port-range=1-35000
 echo "Linking Minikube daemon to Docker daemon"
 eval $(minikube -p minikube docker-env)
+
 
 echo "Montage de MetalLB"
 kubectl apply -f srcs/metallb/namespace.yaml

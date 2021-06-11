@@ -154,4 +154,4 @@ $cfg['SaveDir'] = '';
  * in the doc/ folder or at <https://docs.phpmyadmin.net/>.
  */
 
-$cfg['PmaAbsoluteUri'] = $_SERVER['HTTP_HOST'];
+#$cfg['PmaAbsoluteUri'] = $_SERVER['HTTP_HOST'];
