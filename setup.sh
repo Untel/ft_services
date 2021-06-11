@@ -5,8 +5,8 @@ source ./shortcuts.sh
 if [[ $1 == "re" ]]
 then
     echo "Cleaning..."
-    # kubectl		delete all --all
-    # docker      system prune -a
+    kubectl		delete all --all
+    docker      system prune -a
     minikube    delete
 fi
 
@@ -28,9 +28,9 @@ for service in ${services[@]}
 do
 	echo "Création de l'image $service"
 	docker build -t $service-img $srcs/$service
-
+    
 	echo "Deploiement du service $service on path $srcs/$service/deploy.yaml"
-    kubectl apply -f $srcs/$service/deploy.yaml
+    kubectl apply -f $srcs/$service/
 done
 
 minikube dashboard &

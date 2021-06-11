@@ -8,7 +8,6 @@ RUN       adduser -D -g 'www' www
 RUN       chown -R www:www /var/lib/nginx
 RUN       chown -R www:www /var/www
 
-COPY      nginx.conf /etc/nginx/nginx.conf
 RUN       mkdir -p /var/www
 
 WORKDIR   /tmp
